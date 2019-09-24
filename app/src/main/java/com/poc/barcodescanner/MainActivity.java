@@ -13,19 +13,40 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.imageio.ImageIO;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     Button scanButton;
+    Button scanButtonImage;
     private IntentIntegrator qrScan;
     TextView textName;
     TextView textAddress;
     TextView barcodeContent;
+    Map hintMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
         qrScan = new IntentIntegrator(this);
 
         scanButton =(Button) findViewById(R.id.barcode_scan);
+        scanButtonImage = (Button) findViewById(R.id.barcode_scan_image);
         textName = (TextView) findViewById(R.id.textname);
         barcodeContent = (TextView) findViewById(R.id.textbarcodecontent);
+
+        hintMap = new HashMap();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,7 +81,24 @@ public class MainActivity extends AppCompatActivity {
                 qrScan.initiateScan();
             }
         });
+        scanButtonImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try
+                {
+                    readQRCode();
+
+                }
+                catch(IOException ex)
+                {
+                    return;
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,4 +154,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public String readQRCode() throws FileNotFoundException, IOException, NotFoundException {
+        InputStream inputStream = getAssets().open("qr_code_5cdd30e269752.jpg");
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                new BufferedImageLuminanceSource(
+                        ImageIO.read(inputStream))));
+
+        Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,
+                hintMap);
+
+        return qrCodeResult.getText();
+    }
 }
