@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name" />
+            android:text="Format Name" />
 
         <TextView
             android:id="@+id/textname"
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Address" />
+            android:text="Content" />
 
         <TextView
             android:id="@+id/textaddress"
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Content" />
+            android:text="Complete result" />
 
         <TextView
             android:id="@+id/textbarcodecontent"
@@ -70,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:text="Scan QR Code Image" />
     </LinearLayout>
 

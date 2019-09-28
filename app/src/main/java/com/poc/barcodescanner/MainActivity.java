@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.imageio.ImageIO;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.EncodeHintType;
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         scanButton =(Button) findViewById(R.id.barcode_scan);
         scanButtonImage = (Button) findViewById(R.id.barcode_scan_image);
         textName = (TextView) findViewById(R.id.textname);
+        textAddress = (TextView) findViewById(R.id.textaddress);
         barcodeContent = (TextView) findViewById(R.id.textbarcodecontent);
 
         hintMap = new HashMap();
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         scanButtonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try
+            /*    try
                 {
                     readQRCode();
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 } catch (NotFoundException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
     }
@@ -146,7 +146,9 @@ public class MainActivity extends AppCompatActivity {
                     //in this case you can display whatever data is available on the qrcode
                     //to a toast
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                    barcodeContent.setText(result.getContents());
+                    textName.setText(result.getFormatName());
+                    textAddress.setText(result.getContents());
+                    barcodeContent.setText(result.toString());
                 }
             }
         } else {
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String readQRCode() throws FileNotFoundException, IOException, NotFoundException {
+    /*public String readQRCode() throws FileNotFoundException, IOException, NotFoundException {
         InputStream inputStream = getAssets().open("qr_code_5cdd30e269752.jpg");
         BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
                 new BufferedImageLuminanceSource(
@@ -164,5 +166,5 @@ public class MainActivity extends AppCompatActivity {
                 hintMap);
 
         return qrCodeResult.getText();
-    }
+    }*/
 }
