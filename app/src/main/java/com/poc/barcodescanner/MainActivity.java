@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,12 +38,16 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 public class MainActivity extends AppCompatActivity {
 
     Button scanButton;
     Button scanButtonImage;
     private IntentIntegrator qrScan;
     TextView textName;
+    TextView textGender;
+    TextView textYob;
     TextView textAddress;
     TextView barcodeContent;
     Map hintMap;
@@ -57,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         scanButtonImage = (Button) findViewById(R.id.barcode_scan_image);
         textName = (TextView) findViewById(R.id.textname);
         textAddress = (TextView) findViewById(R.id.textaddress);
-        barcodeContent = (TextView) findViewById(R.id.textbarcodecontent);
+        textGender = (TextView) findViewById(R.id.textgender);
+        textYob = (TextView) findViewById(R.id.textyob);
 
         hintMap = new HashMap();
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -133,22 +140,25 @@ public class MainActivity extends AppCompatActivity {
                 //if qr contains data
                 try {
                     //converting the data to json
-                    JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    textName.setText(obj.getString("name"));
-                    textAddress.setText(obj.getString("address"));
-                    barcodeContent.setText(result.getContents());
+                   // JSONObject obj = new JSONObject(result.getContents());
+                    XmlUtil xmlUtil = new XmlUtil();
+                    Data info =  xmlUtil.parse(result.getContents());
+                    Log.i("xmlutil"," result"+result.getContents());
 
-                } catch (JSONException e) {
+                    //setting values to textviews
+                    textName.setText(info.name);
+                    textGender.setText(info.gender);
+                    textYob.setText(info.yob);
+                    textAddress.setText(info.address);
+
+
+                }  catch (ParserConfigurationException e) {
                     e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                     textName.setText(result.getFormatName());
                     textAddress.setText(result.getContents());
-                    barcodeContent.setText(result.toString());
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
                 }
             }
         } else {
