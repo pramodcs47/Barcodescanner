@@ -50,17 +50,17 @@ public class XmlUtil {
                             data.gender =parser.getAttributeValue("","gender");
                             data.yob =parser.getAttributeValue("","yob");
                             data.address = parser.getAttributeValue("","co");
-                            data.address.concat(" house-");
+                            //data.address.concat(" house-");
                             data.address+= parser.getAttributeValue("","house");
-                            data.address.concat(" street-");
+                            //data.address.concat(" street-");
                             data.address+= parser.getAttributeValue("","street");
-                            data.address.concat(" vtc-");
+                            //data.address.concat(" vtc-");
                             data.address+= parser.getAttributeValue("","vtc");
-                            data.address.concat(" dist-");
+                            //data.address.concat(" dist-");
                             data.address+= parser.getAttributeValue("","dist");
-                            data.address.concat(" state-");
+                            //data.address.concat(" state-");
                             data.address+= parser.getAttributeValue("","state");
-                            data.address.concat(" pc-");
+                            //data.address.concat(" pc-");
                             data.address+= parser.getAttributeValue("","pc");
                         }
                         break;
