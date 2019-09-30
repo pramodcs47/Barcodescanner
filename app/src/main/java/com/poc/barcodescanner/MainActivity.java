@@ -142,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
                     //converting the data to json
                    // JSONObject obj = new JSONObject(result.getContents());
                     XmlUtil xmlUtil = new XmlUtil();
-                    Data info =  xmlUtil.parse(result.getContents());
                     Log.i("xmlutil"," result"+result.getContents());
+                    Data info =  xmlUtil.parse(result.getContents());
 
-                    //setting values to textviews
+                   //setting values to textviews
                     textName.setText(info.name);
                     textGender.setText(info.gender);
                     textYob.setText(info.yob);
